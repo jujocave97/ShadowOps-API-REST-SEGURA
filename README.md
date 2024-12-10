@@ -159,6 +159,7 @@ Las contraseñas deben de ser de 3 carácteres a 15.
   - Salida: JSON con los datos de la asignación. Nombre en Clave del agente, nombre de la misión, tiempo para completarla y estado.
   * Excepciones
     * 403 Forbidden: Solo el Warlord puede asignar la misión.
+    * 406 Not Acceptable: Este agente ya tiene una misión asignada.
 
 * `GET /asignaciones/`: Ver todas las asignaciones agente-misión.
   - Ruta pública, se aceptan peticiones de agentes autenticados.
