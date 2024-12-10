@@ -52,112 +52,142 @@ Asignacion-mision-agente: La asignacion tiene un agente, una mision, tiempo para
 
 ## Lógica de negocio y Restricciones semánticas
 
-Un agente puede participar en varias misiones, si tiene una mision asignada no puede hacer otra.
+Un agente puede participar en varias misiones, si tiene una misión asignada no puede hacer otra.
 
-A una mision solo se le asigna un agente, si el agente está en una mision no puede ser asignado.
+A una misión solo se le asigna un agente, si el agente está en una misión no puede ser asignado.
 
-Si un agente consigue completar la mision, se queda con la recompensa.
+Si un agente consigue completar la misión, se queda con la recompensa.
 
-Si pasa el tiempo de la mision y no ha sido completada, pasa automaticamente a mision fallida.
+Si pasa el tiempo de la misión y no ha sido completada, pasa automaticamente a misión fallida.
 
 Si la asignación se completa, la misión se borra de la lista de misiones.
+
+Un Agente se convierte en Warlord cuando tiene un Bounty mayor que 1.000.000 de $.
+
+El nombre en clave del Agente es único.
+
+Las contraseñas deben de ser de 3 carácteres a 15.
 
 
 # Endpoints
 
 ## Endpoints para AGENTES
 
-* POST /agentes/login: Permite acceder al agente al sistema.
+* `POST /agentes/login`: Permite acceder al agente al sistema.
   - Ruta pública, todas las peticiones se permiten.
   - Entrada: JSON con nombre de agente y password.
-  - Salida: Token de ajente si accede correctamente.
-
+  - Salida: Token de agente si accede correctamente.
+  * Excepciones
+    * 401 Bad Request: Si escribes mal el agente o contraseña.
   
-* POST /agentes/register: Permite al agente registrarse en el sistema
+
+* `POST /agentes/register`: Permite al agente registrarse en el sistema
   - Ruta pública, todas las peticiones se permiten.
-  - Entrada: JSON con nombre de agente, nombre, password y rol ( Warlord , Agente ).
+  - Entrada: JSON con nombre de agente, nombre, password y rol (Warlord, Agente).
   - Salida: JSON con el agente registrado.
+  * Excepciones
+    * 401 Bad Request: Si el formato de la contraseña es incorrecto o si el agente ya está repetido.
 
 
-* GET /agentes/: Permite ver al warlord todos los agentes y su información.
+* `GET /agentes/`: Permite ver al warlord todos los agentes y su información.
   - Ruta privada, solo las peticiones de rol Warlord podrán permitirse.
   - Entrada: Vacía.
   - Salida: Listado de todos los agentes en formato JSON.
+  * Excepciones
+    * 403 Forbidden: Si intenta acceder un agente que no es Warlord.
 
+  
 
-* GET /agentes/{nombreClave}: Permite ver al agente su información.
+* `GET /agentes/{nombreClave}`: Permite ver al agente su información.
   - Ruta privada, solo podrá admitirse la petición al agente que tenga su mismo nombre en clave o al Warlord.
   - Entrada: Path variable del nombre en clave.
   - Salida: JSON con la información del agente que se ha pasado el nombre por ruta.
 
 
-* PUT /agentes/{nombreClave}: Actualizar la información del agente.
+* `PUT /agentes/{nombreClave}`: Actualizar la información del agente.
   - Ruta privada, solo podrá actualizar el Warlord o el agente con el mismo nombre.
   - Entrada: Path Variable de nombre en clave más un JSON con los nuevos datos del agente.
   - Salida: JSON con los datos actualizados del agente.
+  * Excepciones
+    * 403 Forbidden: Si intenta acceder alguien que no tiene el mismo nombre que el token que pasa, o si no es Warlord.
 
 
-* DELETE /agentes/{nombreClave}: Eliminar agente.
+
+* `DELETE /agentes/{nombreClave}`: Eliminar agente.
   - Ruta privada, solo el Warlord podrá eliminar al agente.
   - Entrada: Path Variable del nombre clave del agente.
   - Salida: JSON del agente eliminado.
+  * Excepciones
+    * 403 Forbidden: Si intenta eliminar un agente cualquiera que no sea Warlord.
 
 ## Endpoints para MISIONES
 
-* POST /misiones/: Ingresar misiones en el sistema.
+* `POST /misiones/`: Ingresar misiones en el sistema.
   - Ruta pública, todas las peticiones autenticadas se permiten.
   - Entrada: JSON con nombre, lugar, tipo ( RESCATE, RECONOCIMIENTO, SABOTAJE, ASALTO ), descripción y recompensa.
   - Salida: JSON con la información de la misión.
+  * Excepciones
+    * 401 Unauthorized: Si no está autenticado.
 
 
-* GET /misiones/: Obtener todas las misiones en el sistema.
+* `GET /misiones/`: Obtener todas las misiones en el sistema.
   - Ruta pública, todas las peticiones autenticadas se permiten.
   - Entrada: Vacía.
   - Salida: JSON con todas las misiones.
+  * Excepciones
+    * 401 Unauthorized: Si no está autenticado.
 
-
-* PUT /misiones/{nombre}: Actualizar información de la misión.
+* `PUT /misiones/{nombre}`: Actualizar información de la misión.
   - Ruta privada, solo el Warlord podrá actualizar la misión.
   - Entrada: Path Variable con el nombre de la misión que se quiere actualizad y un JSON con los datos actualizados.
   - Salida: JSON con los datos de la misión actualizados.
+  * Excepciones
+    * 403 Forbidden: Solo el Warlord puede actualizar la misión.
 
-
-* DELETE /misiones/{nombre}: Eliminar misión.
+* `DELETE /misiones/{nombre}`: Eliminar misión.
   - Ruta privada, solo el Warlord podrá eliminar las misiones.
   - Entrada: Path Variable con el nombre de la misión.
   - Salida: JSON con los datos de la misión eliminada.
+  * Excepciones
+    * 403 Forbidden: Solo el Warlord puede eliminar la misión.
 
 ## Endpoints para Asignaciones
 
-* POST /asignaciones/: Asignar una misión a un agente.
+* `POST /asignaciones/`: Asignar una misión a un agente.
   - Ruta privada, solo el Warlord asigna misiones a agentes.
   - Entrada: Request Body con el nombre del agente y el nombre de la misión.
   - Salida: JSON con los datos de la asignación. Nombre en Clave del agente, nombre de la misión, tiempo para completarla y estado.
+  * Excepciones
+    * 403 Forbidden: Solo el Warlord puede asignar la misión.
 
-
-* GET /asignaciones/: Ver todas las asignaciones agente-misión.
+* `GET /asignaciones/`: Ver todas las asignaciones agente-misión.
   - Ruta pública, se aceptan peticiones de agentes autenticados.
   - Entrada: Vacía.
   - Salida: Lista de todas las asignaciones en formato JSON.
+  * Excepciones
+    * 401 Unauthorized: Si no está autenticado.
 
 
-* GET /asignaciones/{nombreClave}: ver todas las asignaciones del agente pasado por la ruta.
+* `GET /asignaciones/{nombreClave}`: ver todas las asignaciones del agente pasado por la ruta.
   - Ruta pública, se aceptan peticiones de agentes autenticados.
   - Entrada: Path Variable con el nombre clave del agente.
   - Salida: Lista de todas las asignaciones que ha tenido el agente en formato JSON.
+  * Excepciones
+    * 401 Unauthorized: Si no está autenticado.
 
 
-* PUT /asignaciones/{idAsignacion}: Actualizar la asignación mediante su id.
+* `PUT /asignaciones/{idAsignacion}`: Actualizar la asignación mediante su id.
   - Ruta privada, solo el Warlord puede actualizar la misión.
   - Entrada: Path Variable con el ID de la asignación.
   - Salida: JSON con la asignación actualizada.
+  * Excepciones
+    * 403 Forbidden: Solo el Warlord puede actualizar la asignación.
 
-
-* DELETE /asignaciones/{idAsignacion}: Eliminar asignación.
+* `DELETE /asignaciones/{idAsignacion}`: Eliminar asignación.
   - Ruta privada, solo el Warlord puede actualizar la misión.
   - Entrada: Path Variable con el ID de la asignación.
   - Salida: JSON con la asignación eliminada.
+  * Excepciones
+    * 403 Forbidden: Solo el Warlord puede eliminar una asignación.
 
-
-
-## 
+  
