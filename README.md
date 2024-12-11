@@ -70,6 +70,8 @@ Las contraseñas deben de ser de 3 carácteres a 15.
 
 Cuando se asigna una misión, su estado es por defecto EN_CURSO.
 
+Cuando se registra un Agente, su bounty es 0.
+
 # Endpoints
 
 ## Endpoints para AGENTES
