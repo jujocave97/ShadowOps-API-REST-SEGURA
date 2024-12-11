@@ -68,6 +68,7 @@ El nombre en clave del Agente es único.
 
 Las contraseñas deben de ser de 3 carácteres a 15.
 
+Cuando se asigna una misión, su estado es por defecto EN_CURSO.
 
 # Endpoints
 
