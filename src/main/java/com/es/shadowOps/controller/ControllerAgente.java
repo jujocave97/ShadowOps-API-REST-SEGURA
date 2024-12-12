@@ -1,5 +1,6 @@
 package com.es.shadowOps.controller;
 
+import com.es.shadowOps.dto.AgenteDTO;
 import com.es.shadowOps.dto.AgenteDTOLogin;
 import com.es.shadowOps.dto.AgenteDTOCompleto;
 import com.es.shadowOps.service.ServiceAgente;
@@ -87,6 +88,17 @@ public class ControllerAgente {
             @PathVariable String nombreClave, @RequestBody AgenteDTOCompleto agenteDTOCompleto
     ){
         // ruta privada solo el warlord o el agente con su mismo nombre puede acceder
-        return null;
+        serviceAgente.actualizarAgente(nombreClave,agenteDTOCompleto);
+        return new ResponseEntity<AgenteDTOCompleto>(agenteDTOCompleto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{nombreClave}")
+    public ResponseEntity<AgenteDTO> eliminarAgente(
+            @PathVariable String nombreClave
+    ){
+        //ruta privada, solo el Warlord puede eliminar agentes
+        AgenteDTO agenteDTO = serviceAgente.eliminarAgente(nombreClave);
+
+        return new ResponseEntity<AgenteDTO>(agenteDTO, HttpStatus.OK);
     }
 }
