@@ -1,36 +1,25 @@
 package com.es.shadowOps.dto;
 
-public class AgenteDTOCompleto {
+public class AgenteDTOCompletoSinPassword {
     private String nombreClave;
     private String nombre;
-    private String password;
     private String roles;
     private double bounty;
-    public AgenteDTOCompleto() {
+    public AgenteDTOCompletoSinPassword() {
     }
 
-    public AgenteDTOCompleto(String nombreClave, String nombre, String password, String roles) {
+    public AgenteDTOCompletoSinPassword(String nombreClave, String nombre, String roles) {
         this.nombreClave = nombreClave;
         this.nombre = nombre;
-        this.password = password;
         this.roles = roles;
     }
 
-    public AgenteDTOCompleto(String nombreClave, String nombre, String password, String roles, double bounty) {
-        this.nombreClave = nombreClave;
-        this.nombre = nombre;
-        this.password = password;
-        this.roles = roles;
-        this.bounty = bounty;
-    }
-
-    public AgenteDTOCompleto(String nombreClave, String nombre, String roles, double bounty) {
+    public AgenteDTOCompletoSinPassword(String nombreClave, String nombre, String roles, double bounty) {
         this.nombreClave = nombreClave;
         this.nombre = nombre;
         this.roles = roles;
         this.bounty = bounty;
     }
-
 
     public String getNombreClave() {
         return nombreClave;
@@ -46,14 +35,6 @@ public class AgenteDTOCompleto {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getRoles() {

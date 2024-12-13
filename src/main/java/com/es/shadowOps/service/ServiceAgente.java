@@ -82,7 +82,7 @@ public class ServiceAgente implements UserDetailsService {
         }
         Agente a = repositoryAgente.findById(nombreClave).orElse(null);
         return new AgenteDTOCompleto(
-                a.getNombreClave(),a.getNombre(),a.getPassword(),a.getRoles(), a.getBounty()
+                a.getNombreClave(),a.getNombre(),a.getRoles(), a.getBounty()
             );
     }
 
@@ -100,6 +100,7 @@ public class ServiceAgente implements UserDetailsService {
 
         repositoryAgente.save(a);
 
+        agenteDTOCompleto.setPassword("****************");
         return agenteDTOCompleto;
     }
 

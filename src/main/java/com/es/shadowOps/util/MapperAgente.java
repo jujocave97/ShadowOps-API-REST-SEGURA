@@ -12,7 +12,7 @@ public class MapperAgente {
         List<AgenteDTOCompleto> agenteDTOCompletos = new ArrayList<>();
         for( Agente a : agentes){
             AgenteDTOCompleto agenteDTOCompleto = new AgenteDTOCompleto(
-                    a.getNombreClave(),a.getNombre(),a.getPassword(),a.getRoles(), a.getBounty()
+                    a.getNombreClave(),a.getNombre(),a.getRoles(), a.getBounty()
             );
             agenteDTOCompletos.add(agenteDTOCompleto);
         }
