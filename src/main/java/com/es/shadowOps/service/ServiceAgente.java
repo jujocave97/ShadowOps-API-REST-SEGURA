@@ -4,16 +4,55 @@ import com.es.shadowOps.dto.AgenteDTO;
 import com.es.shadowOps.dto.AgenteDTOCompleto;
 import com.es.shadowOps.model.Agente;
 import com.es.shadowOps.repository.RepositoryAgente;
+import com.es.shadowOps.security.SecurityConfig;
 import com.es.shadowOps.util.MapperAgente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class ServiceAgente {
+public class ServiceAgente implements UserDetailsService {
     @Autowired
     private RepositoryAgente repositoryAgente;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        // BUSCO EL USUARIO POR SU NOMBRE EN LA BDD
+        Agente agente = repositoryAgente
+                .findById(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario No encontrado"));
+
+        /* RETORNAMOS UN USERDETAILS
+        El método loadUserByUsername nos fuerza a devolver un objeto de tipo UserDetails.
+        Tenemos que convertir nuestro objeto de tipo Usuario a un objeto de tipo UserDetails
+        ¡No os preocupéis, esto es siempre igual!
+         */
+        List<GrantedAuthority> authorities = Arrays.stream(agente.getRoles().split(","))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.trim()))
+                .collect(Collectors.toList());
+
+        UserDetails userDetails = User // User pertenece a SpringSecurity
+                .builder()
+                .username(agente.getNombreClave())
+                .password(agente.getPassword())
+                .roles(agente.getRoles())
+                .build();
+
+        return userDetails;
+    }
 
     public AgenteDTOCompleto registro(AgenteDTOCompleto agenteDTOCompleto){
         if(repositoryAgente.findById(agenteDTOCompleto.getNombreClave()).isPresent()){
@@ -24,7 +63,9 @@ public class ServiceAgente {
             // throw exception invalid password
         }
 
+
         Agente agente = MapperAgente.crearAgenteAPartirDelDTOCompleto(agenteDTOCompleto);
+        agente.setPassword(passwordEncoder.encode(agente.getPassword()));
         repositoryAgente.save(agente);
 
         return agenteDTOCompleto;

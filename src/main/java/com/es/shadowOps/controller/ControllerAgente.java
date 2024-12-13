@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/agentes")
 public class ControllerAgente {
     @Autowired
@@ -38,6 +38,7 @@ public class ControllerAgente {
             );
         } catch (Exception e) {
             System.out.println("Excepcion en authentication");
+            throw  new RuntimeException("EXCEPCION atenticacion");
             // lanzar Error
         }
 
@@ -47,6 +48,7 @@ public class ControllerAgente {
             token = tokenService.generateToken(authentication);
         } catch (Exception e) {
             System.out.println("Excepcion en generar token");
+            throw  new RuntimeException("EXCEPCION GENERAR TOKEN");
             // lanzar error
         }
 
@@ -78,7 +80,7 @@ public class ControllerAgente {
     public ResponseEntity<AgenteDTOCompleto> getAgenteNombre(
             @PathVariable String nombreClave
     ){
-        // ruta privada solo el warlord o el agente con su mismo nombre puede acceder
+        // ruta privada solo el warlord o el agente con su mismo nombre puede acceder | por ahora esta puesto solo para el warlord
         AgenteDTOCompleto agenteDTOCompleto = serviceAgente.getAgentePorNombre(nombreClave);
         return new ResponseEntity<AgenteDTOCompleto>(agenteDTOCompleto,HttpStatus.OK);
     }
@@ -87,7 +89,7 @@ public class ControllerAgente {
     public  ResponseEntity<AgenteDTOCompleto> actualizarAgente(
             @PathVariable String nombreClave, @RequestBody AgenteDTOCompleto agenteDTOCompleto
     ){
-        // ruta privada solo el warlord o el agente con su mismo nombre puede acceder
+        // ruta privada solo el warlord o el agente con su mismo nombre puede acceder | por ahora esta puesto solo warlord
         serviceAgente.actualizarAgente(nombreClave,agenteDTOCompleto);
         return new ResponseEntity<AgenteDTOCompleto>(agenteDTOCompleto, HttpStatus.OK);
     }
