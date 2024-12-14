@@ -28,19 +28,20 @@ public class Mision {
     public Mision() {
     }
 
-    public Mision(String nombre, String lugar, Tipo tipo, String descripcion, double recompensa, List<Asignacion> asignaciones) {
+    public Mision(String nombre, String lugar, String tipo, String descripcion, double recompensa, List<Asignacion> asignaciones) {
         this.nombre = nombre;
         this.lugar = lugar;
-        this.tipo = tipo;
+        this.tipo = convertirStringATipo(tipo);
         this.descripcion = descripcion;
         this.recompensa = recompensa;
         this.asignaciones = asignaciones;
     }
 
-    public Mision(String nombre, String lugar, Tipo tipo, String descripcion, double recompensa) {
+
+    public Mision(String nombre, String lugar, String tipo, String descripcion, double recompensa) {
         this.nombre = nombre;
         this.lugar = lugar;
-        this.tipo = tipo;
+        this.tipo = convertirStringATipo(tipo);
         this.descripcion = descripcion;
         this.recompensa = recompensa;
     }
@@ -73,8 +74,8 @@ public class Mision {
         return tipo;
     }
 
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
+    public void setTipo(String tipo) {
+        this.tipo = convertirStringATipo(tipo);
     }
 
     public String getDescripcion() {
@@ -99,6 +100,14 @@ public class Mision {
 
     public void setAsignaciones(List<Asignacion> asignaciones) {
         this.asignaciones = asignaciones;
+    }
+
+    private Tipo convertirStringATipo(String tipoS){
+        try{
+            return Tipo.valueOf(tipoS.toUpperCase());
+        }catch (IllegalArgumentException e){
+            throw new IllegalArgumentException("Tipo de misión no válido: "+tipoS);
+        }
     }
 }
 

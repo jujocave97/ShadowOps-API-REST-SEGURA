@@ -4,7 +4,6 @@ import com.es.shadowOps.dto.AgenteDTO;
 import com.es.shadowOps.dto.AgenteDTOCompleto;
 import com.es.shadowOps.model.Agente;
 import com.es.shadowOps.repository.RepositoryAgente;
-import com.es.shadowOps.security.SecurityConfig;
 import com.es.shadowOps.util.MapperAgente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
