@@ -102,4 +102,25 @@ public class ServiceAsignacion {
         return new AsignacionDTOEstado(asignacion.getId(),asignacionDTOActualizar.getAgente(), asignacionDTOActualizar.getMision(),asignacionDTOActualizar.getDuration(), asignacionDTOActualizar.getEstado());
     }
 
+
+    public AsignacionDTOEstado eliminarAsignacion(String id){
+        Long idL = 0L;
+        try {
+            idL = Long.parseLong(id);
+        }catch (NumberFormatException e){
+            // throw exception
+        }
+
+        Asignacion asignacion = repositoryAsignacion.findById(idL).orElse(null);
+
+        if(asignacion == null){
+            // throw exception
+        }
+
+        repositoryAsignacion.delete(asignacion);
+
+        return new AsignacionDTOEstado(asignacion.getId(),asignacion.getAgente().getNombreClave(),asignacion.getMision().getNombre(),
+                asignacion.getTiempoLimite().toMinutesPart(),asignacion.getEstado().name());
+    }
+
 }

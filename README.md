@@ -187,7 +187,7 @@ Cuando se registra un Agente, su bounty es 0.
   * Excepciones
     * 403 Forbidden: Solo el Warlord puede actualizar la asignación.
 
-* `DELETE /asignaciones/{idAsignacion}`: Eliminar asignación.
+* `DELETE /asignaciones/{id}`: Eliminar asignación.
   - Ruta privada, solo el Warlord puede actualizar la misión.
   - Entrada: Path Variable con el ID de la asignación.
   - Salida: JSON con la asignación eliminada.

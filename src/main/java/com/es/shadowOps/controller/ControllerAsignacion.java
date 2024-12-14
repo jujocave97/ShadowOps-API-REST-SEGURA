@@ -41,10 +41,18 @@ public class ControllerAsignacion {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AsignacionDTOEstado> editarEstado(
+    public ResponseEntity<AsignacionDTOEstado> editarAsignacion(
             @PathVariable String id, @RequestBody AsignacionDTOActualizar asignacionDTOActualizar
     ){
         AsignacionDTOEstado asignacionDTOEstado = serviceAsignacion.actualizarAsignacion(id,asignacionDTOActualizar);
+        return new ResponseEntity<AsignacionDTOEstado>(asignacionDTOEstado,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<AsignacionDTOEstado> eliminarAsignacion(
+            @PathVariable String id
+    ){
+        AsignacionDTOEstado asignacionDTOEstado = serviceAsignacion.eliminarAsignacion(id);
         return new ResponseEntity<AsignacionDTOEstado>(asignacionDTOEstado,HttpStatus.OK);
     }
 }
