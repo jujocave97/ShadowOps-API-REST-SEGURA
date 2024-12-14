@@ -54,7 +54,8 @@ public class ServiceAsignacion {
         );
 
         repositoryAsignacion.save(asignacion);
-        ActualizadorDeTiempo.cambiarEstadoMision(asignacion, repositoryAsignacion);
+        // lanzo un hilo para controlar el tiempo de la asignación.
+        ActualizadorDeTiempo.cambiarEstadoMision(asignacion.getId(), repositoryAsignacion,asignacion.getTiempoLimite());
 
         return asignacionDTOInsert;
 
