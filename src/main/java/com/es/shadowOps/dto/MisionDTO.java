@@ -1,6 +1,7 @@
 package com.es.shadowOps.dto;
 
 public class MisionDTO {
+    private long id;
     private String nombre;
     private String lugar;
     private String tipo;
@@ -16,6 +17,23 @@ public class MisionDTO {
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.recompensa = recompensa;
+    }
+
+    public MisionDTO(long id,String nombre, String lugar, String tipo, String descripcion, Double recompensa) {
+        this.id = id;
+        this.nombre = nombre;
+        this.lugar = lugar;
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.recompensa = recompensa;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNombre() {

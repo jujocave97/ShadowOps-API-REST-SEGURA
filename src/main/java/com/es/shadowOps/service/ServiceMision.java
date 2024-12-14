@@ -37,13 +37,22 @@ public class ServiceMision {
         return MapperMision.convertirMisionesAMisionesDTO(misions);
     }
 
-    public void actualizarMision (String nombre, MisionDTO misionDTO){
-        if(repositoryMision.findByNombre(nombre).isEmpty() || misionDTO.getNombre().isEmpty() ||
+    public void actualizarMision (String id, MisionDTO misionDTO){
+        Long idL = 0L;
+
+        try{
+            idL = Long.parseLong(id);
+        }catch (NumberFormatException e){
+            // throw exception
+        }
+
+
+        if(repositoryMision.findById(idL).isEmpty() || misionDTO.getNombre().isEmpty() ||
             misionDTO.getTipo().isEmpty() || misionDTO.getLugar().isEmpty() || misionDTO.getRecompensa() <= 0){
             // throw exeption
         }
 
-        Mision mision = repositoryMision.findByNombre(nombre).orElse(null);
+        Mision mision = repositoryMision.findById(idL).orElse(null);
         if(mision == null){
             // trow exeption
         }

@@ -11,7 +11,7 @@ public class MapperMision {
         List<MisionDTO> misionDTOS = new ArrayList<>();
         for(Mision m: misions){
             misionDTOS.add(new MisionDTO(
-                    m.getNombre(),m.getLugar(),m.getTipo().toString(),m.getDescripcion(),m.getRecompensa()
+                    m.getId(),m.getNombre(),m.getLugar(),m.getTipo().toString(),m.getDescripcion(),m.getRecompensa()
             ));
         }
 
