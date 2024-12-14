@@ -172,7 +172,7 @@ Cuando se registra un Agente, su bounty es 0.
     * 401 Unauthorized: Si no está autenticado.
 
 
-* `GET /asignaciones/{nombreClave}`: ver todas las asignaciones del agente pasado por la ruta.
+* `GET /asignaciones/{agente}`: ver todas las asignaciones del agente pasado por la ruta.
   - Ruta pública, se aceptan peticiones de agentes autenticados.
   - Entrada: Path Variable con el nombre clave del agente.
   - Salida: Lista de todas las asignaciones que ha tenido el agente en formato JSON.

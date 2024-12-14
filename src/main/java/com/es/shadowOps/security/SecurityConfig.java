@@ -57,7 +57,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT,"/misiones/{nombre}").hasRole("WARLORD")
                                 .requestMatchers(HttpMethod.DELETE,"/misiones/{nombre}").hasRole("WARLORD")
                                 .requestMatchers(HttpMethod.POST,"/asignaciones/").hasRole("WARLORD")
-                                .requestMatchers(HttpMethod.GET,"/asignaciones/").authenticated()
+                                .requestMatchers(HttpMethod.GET,"/asignaciones/","/asignaciones/{agente}").authenticated()
+                                .requestMatchers(HttpMethod.PUT,"/asignaciones/{id}").hasRole("WARLORD")
 
 //                        .requestMatchers("/productos/**").authenticated()
 

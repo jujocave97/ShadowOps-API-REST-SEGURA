@@ -1,6 +1,6 @@
 package com.es.shadowOps.util;
 
-import com.es.shadowOps.dto.AsignacionDTO;
+import com.es.shadowOps.dto.AsignacionDTOActualizar;
 import com.es.shadowOps.dto.AsignacionDTOEstado;
 import com.es.shadowOps.model.Asignacion;
 
@@ -16,4 +16,6 @@ public class MapperAsignacion {
 
         return asignacionDTOS;
     }
+
+
 }

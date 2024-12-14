@@ -1,17 +1,19 @@
 package com.es.shadowOps.dto;
 
-public class AsignacionDTO {
+public class AsignacionDTOActualizar {
     private String agente;
     private String mision;
     private int duration;
+    private String estado;
 
-    public AsignacionDTO(String agente, String mision, int duration) {
+    public AsignacionDTOActualizar() {
+    }
+
+    public AsignacionDTOActualizar(String agente, String mision, int duration, String estado) {
         this.agente = agente;
         this.mision = mision;
         this.duration = duration;
-    }
-
-    public AsignacionDTO() {
+        this.estado = estado;
     }
 
     public String getAgente() {
@@ -36,5 +38,13 @@ public class AsignacionDTO {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

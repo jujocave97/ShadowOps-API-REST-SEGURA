@@ -1,6 +1,7 @@
 package com.es.shadowOps.controller;
 
-import com.es.shadowOps.dto.AsignacionDTO;
+import com.es.shadowOps.dto.AsignacionDTOActualizar;
+import com.es.shadowOps.dto.AsignacionDTOInsert;
 import com.es.shadowOps.dto.AsignacionDTOEstado;
 import com.es.shadowOps.service.ServiceAsignacion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,32 @@ public class ControllerAsignacion {
     private ServiceAsignacion serviceAsignacion;
 
     @PostMapping("/")
-    public ResponseEntity<AsignacionDTO> insertarAsignacion(
-            @RequestBody AsignacionDTO asignacionDTO
+    public ResponseEntity<AsignacionDTOInsert> insertarAsignacion(
+            @RequestBody AsignacionDTOInsert asignacionDTOInsert
     ){
-        serviceAsignacion.insertarAsignacion(asignacionDTO);
-        return new ResponseEntity<AsignacionDTO>(asignacionDTO, HttpStatus.OK);
+        serviceAsignacion.insertarAsignacion(asignacionDTOInsert);
+        return new ResponseEntity<AsignacionDTOInsert>(asignacionDTOInsert, HttpStatus.OK);
     }
 
     @GetMapping("/")
     public ResponseEntity<List<AsignacionDTOEstado>> getAllAsignaciones(){
         List<AsignacionDTOEstado> asignacionDTOEstados = serviceAsignacion.getAllAsignaciones();
         return new ResponseEntity<>(asignacionDTOEstados, HttpStatus.OK);
+    }
+
+    @GetMapping("/{agente}")
+    public ResponseEntity<List<AsignacionDTOEstado>> getAsignacionesAgente(
+            @PathVariable String agente
+    ){
+        List<AsignacionDTOEstado> asignacionDTOEstados = serviceAsignacion.getAllAsignacionesAgente(agente);
+        return new ResponseEntity<List<AsignacionDTOEstado>>(asignacionDTOEstados,HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AsignacionDTOEstado> editarEstado(
+            @PathVariable String id, @RequestBody AsignacionDTOActualizar asignacionDTOActualizar
+    ){
+        AsignacionDTOEstado asignacionDTOEstado = serviceAsignacion.actualizarAsignacion(id,asignacionDTOActualizar);
+        return new ResponseEntity<AsignacionDTOEstado>(asignacionDTOEstado,HttpStatus.OK);
     }
 }
