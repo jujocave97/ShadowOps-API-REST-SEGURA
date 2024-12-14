@@ -9,7 +9,7 @@ import java.util.List;
 public class Mision {
 
     public enum Tipo {
-        RESCATE, RECONOCIMIENTO, SABOTAJE, ASALTO;
+        RESCATE, RECONOCIMIENTO, SABOTAJE, ASALTO, COMPLETADA, FALLIDA;
     }
 
     @Id

@@ -9,6 +9,7 @@ import com.es.shadowOps.model.Mision;
 import com.es.shadowOps.repository.RepositoryAgente;
 import com.es.shadowOps.repository.RepositoryAsignacion;
 import com.es.shadowOps.repository.RepositoryMision;
+import com.es.shadowOps.util.ActualizadorDeTiempo;
 import com.es.shadowOps.util.MapperAsignacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,10 +35,16 @@ public class ServiceAsignacion {
         if( a == null){
             // throw exception
         }
+        if(comprobarSiTieneMisionAsignadaEnCurso(a)){
+            throw new RuntimeException();
+        }
 
         Mision m = repositoryMision.findByNombre(asignacionDTOInsert.getMision()).orElse(null);
         if( m == null){
             // throw exception
+        }
+        if(comprobarSiTieneAgenteAsignado(m)){
+            throw new RuntimeException();
         }
 
         Duration duration = Duration.ofMinutes(asignacionDTOInsert.getDuration());
@@ -47,6 +54,7 @@ public class ServiceAsignacion {
         );
 
         repositoryAsignacion.save(asignacion);
+        ActualizadorDeTiempo.cambiarEstadoMision(asignacion, repositoryAsignacion);
 
         return asignacionDTOInsert;
 
@@ -97,6 +105,11 @@ public class ServiceAsignacion {
         Duration duration = Duration.ofMinutes(asignacionDTOActualizar.getDuration());
         asignacion.setTiempoLimite(duration);
 
+        if(asignacion.getEstado().equals(Asignacion.Estado.COMPLETADO)){
+            agente.setBounty(mision.getRecompensa());
+        }
+
+
         repositoryAsignacion.save(asignacion);
 
         return new AsignacionDTOEstado(asignacion.getId(),asignacionDTOActualizar.getAgente(), asignacionDTOActualizar.getMision(),asignacionDTOActualizar.getDuration(), asignacionDTOActualizar.getEstado());
@@ -121,6 +134,25 @@ public class ServiceAsignacion {
 
         return new AsignacionDTOEstado(asignacion.getId(),asignacion.getAgente().getNombreClave(),asignacion.getMision().getNombre(),
                 asignacion.getTiempoLimite().toMinutesPart(),asignacion.getEstado().name());
+    }
+
+    public boolean comprobarSiTieneMisionAsignadaEnCurso(Agente a){
+        List<Asignacion> asignacionList = repositoryAsignacion.findAll().stream().filter(asignacion -> asignacion.getAgente().equals(a)).toList();
+
+        for (Asignacion asignacion: asignacionList){
+            if(asignacion.getEstado().equals(Asignacion.Estado.EN_CURSO))
+                return true;
+        }
+
+        return false;
+
+    }
+
+    public boolean comprobarSiTieneAgenteAsignado( Mision m){
+        if(repositoryAsignacion.findAll().stream().filter(asignacion -> asignacion.getMision().getId().equals(m.getId())).findFirst().isPresent()){
+            return true;
+        }
+        return false;
     }
 
 }
