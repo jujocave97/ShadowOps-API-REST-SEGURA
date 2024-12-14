@@ -107,7 +107,11 @@ public class ServiceAsignacion {
         asignacion.setTiempoLimite(duration);
 
         if(asignacion.getEstado().equals(Asignacion.Estado.COMPLETADO)){
-            agente.setBounty(mision.getRecompensa());
+            agente.setBounty(agente.getBounty()+mision.getRecompensa());
+        }
+
+        if(asignacion.getAgente().getBounty() >= 100000000){
+            agente.setRoles("WARLORD");
         }
 
 

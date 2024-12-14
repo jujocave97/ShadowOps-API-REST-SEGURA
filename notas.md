@@ -6,13 +6,13 @@ Notas para el proyecto en desarrollo:
 
 - Si un agente consigue completar la misión, se queda con la recompensa.
 
-- Si pasa el tiempo de la misión y no ha sido completada, pasa automaticamente a misión fallida.
+- Si pasa el tiempo de la misión y no ha sido completada, pasa automaticamente a misión fallida. ( hecho )
 
-- Un Agente se convierte en Warlord cuando tiene un Bounty mayor que 1.000.000 de $.
+- Un Agente se convierte en Warlord cuando tiene un Bounty mayor que 1.000.000 de $. ( hecho )
 
 - El nombre en clave del Agente es único. ( hecho )
 
-- Las contraseñas deben de ser de 3 carácteres a 15.
+- Las contraseñas deben de ser de 3 carácteres a 15. ( hecho )
 
 - Cuando se asigna una misión, su estado es por defecto EN_CURSO. ( hecho )
 
