@@ -50,11 +50,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth // Filtros para securizar diferentes endpoints de la aplicación
                                 .requestMatchers(HttpMethod.POST,"/agentes/login", "/agentes/registro").permitAll() // Filtro que deja pasar todas las peticiones que vayan a los endpoints que definamos
                                 .requestMatchers(HttpMethod.GET,"/agentes/").hasRole("WARLORD")
+                                .requestMatchers(HttpMethod.GET,"/agentes/{nombreClave}").hasRole("WARLORD")
+                                .requestMatchers(HttpMethod.PUT,"/agentes/{nombreClave}").hasRole("WARLORD")
                                 .requestMatchers(HttpMethod.POST,"/misiones/").authenticated()
                                 .requestMatchers(HttpMethod.GET,"/misiones/").authenticated()
                                 .requestMatchers(HttpMethod.PUT,"/misiones/{nombre}").hasRole("WARLORD")
-                                .requestMatchers(HttpMethod.DELETE,"/misiones/{nombre}").hasRole(("WARLORD"))
-                                .requestMatchers(HttpMethod.PUT,"/agentes/{nombreClave}").hasRole("WARLORD")
+                                .requestMatchers(HttpMethod.DELETE,"/misiones/{nombre}").hasRole("WARLORD")
+                                .requestMatchers(HttpMethod.POST,"/asignaciones/").hasRole("WARLORD")
+                                .requestMatchers(HttpMethod.GET,"/asignaciones/").authenticated()
+
 //                        .requestMatchers("/productos/**").authenticated()
 
                                 .anyRequest().authenticated() // Para el resto de peticiones, el usuario debe estar autenticado

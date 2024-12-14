@@ -77,7 +77,15 @@ public class Asignacion {
         return estado;
     }
 
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setEstado(String estado) {
+        this.estado = convertirStringAEstado(estado);
+    }
+
+    private Estado convertirStringAEstado(String estadoS){
+        try{
+            return Estado.valueOf(estadoS.toUpperCase());
+        }catch (IllegalArgumentException e){
+            throw new IllegalArgumentException("Tipo de misión no válido: "+estadoS);
+        }
     }
 }

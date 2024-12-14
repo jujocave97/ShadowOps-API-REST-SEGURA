@@ -100,9 +100,8 @@ Cuando se registra un Agente, su bounty es 0.
     * 403 Forbidden: Si intenta acceder un agente que no es Warlord.
 
   
-
 * `GET /agentes/{nombreClave}`: Permite ver al agente su información.
-  - Ruta privada, solo podrá admitirse la petición al agente que tenga su mismo nombre en clave o al Warlord.
+  - Ruta privada, solo podrá admitirse la petición al Warlord.
   - Entrada: Path variable del nombre en clave.
   - Salida: JSON con la información del agente que se ha pasado el nombre por ruta.
   * Excepciones
