@@ -22,16 +22,16 @@ académicas.
 
 ## Tablas
 
-Agente: El agente tiene un nombre, nombre en clave ( ID ), rol ( Warlord o Agente ), password y bounty ( bounty seria el dinero total de las misiones realizadas ).
+Agente: El agente tiene un nombre, nombre en clave (ID), rol (Warlord o Agente), password y bounty (bounty sería el dinero total de las misiones realizadas).
 
-Misiones: La misión tiene un ID, nombre de misión, lugar, tipo de misión ( Enumerado que define el tipo de misión: RESCATE, RECONOCIMIENTO, SABOTAJE, ASALTO ), descripcion de la misión y la recompensa.
+Misiones: La misión tiene un ID, nombre de misión, lugar, tipo de misión (Enumerado que define el tipo de misión: RESCATE, RECONOCIMIENTO, SABOTAJE, ASALTO), descripcion de la misión y la recompensa.
 
-Asignacion-mision-agente: La asignacion tiene un agente, una mision, tiempo para completarla y un estado ( Enumerado que define el estado de la misión, completada, en proceso, mision fallida ).
+Asignacion-mision-agente: La asignacion tiene un agente, una mision, tiempo para completarla y un estado (Enumerado que define el estado de la misión, completada, en proceso, mision fallida).
 
 
 ### Agente
     nombre: String
-    nombreEnClave: String ( id )
+    nombreEnClave: String (id)
     password: String
     rol: String
     bounty: double
@@ -40,23 +40,23 @@ Asignacion-mision-agente: La asignacion tiene un agente, una mision, tiempo para
     id: Long
     nombre: String
     lugar: String
-    tipo: Enum (?)
+    tipo: Enum
     descripcion: String
     recompensa: double
 
 ### Asignacion
     agente: Agente
     mision: Mision
-    tiempoParaCompletarla: (por determinar)
-    estado: Enum (?)
+    tiempoParaCompletarla: Duration
+    estado: Enum
 
 ## Lógica de negocio y Restricciones semánticas
 
-Un agente puede participar en varias misiones, si tiene una misión asignada en curso no puede hacer otra. ( hecho )
+Un agente puede participar en varias misiones, si tiene una misión asignada en curso no puede hacer otra.
 
-A una misión solo se le asigna un agente, si el agente está en una misión no puede ser asignado. ( hecho )
+A una misión solo se le asigna un agente, si el agente está en una misión no puede ser asignado.
 
-Si un agente consigue completar la misión, se queda con la recompensa. ( hecho )
+Si un agente consigue completar la misión, se queda con la recompensa.
 
 Si pasa el tiempo de la misión y no ha sido completada, pasa automaticamente a misión fallida.
 
