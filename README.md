@@ -52,15 +52,13 @@ Asignacion-mision-agente: La asignacion tiene un agente, una mision, tiempo para
 
 ## Lógica de negocio y Restricciones semánticas
 
-Un agente puede participar en varias misiones, si tiene una misión asignada en curso no puede hacer otra. ( hecho )
+Un agente puede participar en varias misiones, si tiene una misión asignada en curso no puede hacer otra.
 
-A una misión solo se le asigna un agente, si el agente está en una misión no puede ser asignado. ( hecho )
+A una misión solo se le asigna un agente, si el agente está en una misión no puede ser asignado.
 
-Si un agente consigue completar la misión, se queda con la recompensa. ( hecho )
+Si un agente consigue completar la misión, se queda con la recompensa.
 
 Si pasa el tiempo de la misión y no ha sido completada, pasa automaticamente a misión fallida.
-
-Si la asignación se completa, la misión se borra de la lista de misiones.
 
 Un Agente se convierte en Warlord cuando tiene un Bounty mayor que 1.000.000 de $.
 
