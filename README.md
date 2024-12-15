@@ -40,15 +40,15 @@ Asignacion-mision-agente: La asignacion tiene un agente, una mision, tiempo para
     id: Long
     nombre: String
     lugar: String
-    tipo: Enum (?)
+    tipo: Enum
     descripcion: String
     recompensa: double
 
 ### Asignacion
     agente: Agente
     mision: Mision
-    tiempoParaCompletarla: (por determinar)
-    estado: Enum (?)
+    tiempoParaCompletarla: Duration
+    estado: Enum
 
 ## Lógica de negocio y Restricciones semánticas
 
