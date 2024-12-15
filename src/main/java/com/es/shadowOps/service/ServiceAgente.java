@@ -2,6 +2,9 @@ package com.es.shadowOps.service;
 
 import com.es.shadowOps.dto.AgenteDTO;
 import com.es.shadowOps.dto.AgenteDTOCompleto;
+import com.es.shadowOps.error.errores.BadRequestException;
+import com.es.shadowOps.error.errores.DuplicatedException;
+import com.es.shadowOps.error.errores.NotFoundException;
 import com.es.shadowOps.model.Agente;
 import com.es.shadowOps.repository.RepositoryAgente;
 import com.es.shadowOps.util.MapperAgente;
@@ -55,11 +58,11 @@ public class ServiceAgente implements UserDetailsService {
 
     public AgenteDTOCompleto registro(AgenteDTOCompleto agenteDTOCompleto){
         if(repositoryAgente.findById(agenteDTOCompleto.getNombreClave()).isPresent()){
-            //throw exception duplicated
+            throw new DuplicatedException("El agente ya existe");
         }
 
         if(agenteDTOCompleto.getPassword().length() > 15 || agenteDTOCompleto.getPassword().length() < 3){
-            // throw exception invalid password
+            throw new BadRequestException("Formato de contraseña inválido");
         }
 
 
@@ -77,7 +80,7 @@ public class ServiceAgente implements UserDetailsService {
 
     public AgenteDTOCompleto getAgentePorNombre(String nombreClave){
         if(nombreClave.isEmpty() || nombreClave.isBlank()){
-            // throw exception
+            throw new BadRequestException("El nombre clave no puede estar vacío");
         }
         Agente a = repositoryAgente.findById(nombreClave).orElse(null);
         return new AgenteDTOCompleto(
@@ -87,7 +90,12 @@ public class ServiceAgente implements UserDetailsService {
 
     public AgenteDTOCompleto actualizarAgente(String nombreClave, AgenteDTOCompleto agenteDTOCompleto){
         if(repositoryAgente.findById(nombreClave).isEmpty()){
-            // throw exception agente no existe
+            throw new NotFoundException("El agente que quieres actualizar no existe");
+        }
+
+        if(agenteDTOCompleto.getNombre().isEmpty() || agenteDTOCompleto.getNombreClave().isEmpty() || agenteDTOCompleto.getPassword().isEmpty() ||
+         agenteDTOCompleto.getBounty() <= 0){
+            throw new BadRequestException("Los campos para actualizar no pueden estar vacíos");
         }
 
         Agente a = repositoryAgente.findById(nombreClave).orElse(null);
@@ -95,7 +103,6 @@ public class ServiceAgente implements UserDetailsService {
         a.setNombreClave(agenteDTOCompleto.getNombreClave());
         a.setPassword(agenteDTOCompleto.getPassword());
         a.setBounty(a.getBounty());
-        // TODO: TERMINAR ESTO , pensar en implementar un método para comprobar los campos
 
         repositoryAgente.save(a);
 
@@ -105,7 +112,7 @@ public class ServiceAgente implements UserDetailsService {
 
     public AgenteDTO eliminarAgente(String nombreClave){
         if(repositoryAgente.findById(nombreClave).isEmpty()){
-            // throw exception doesnt exist
+            throw new NotFoundException("El agente no se ha encontrado, no se puede eliminar algo que no existe");
         }
         Agente a = repositoryAgente.findById(nombreClave).orElse(null);
         repositoryAgente.delete(a);

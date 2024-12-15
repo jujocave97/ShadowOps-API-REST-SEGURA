@@ -3,6 +3,9 @@ package com.es.shadowOps.service;
 import com.es.shadowOps.dto.AsignacionDTOActualizar;
 import com.es.shadowOps.dto.AsignacionDTOInsert;
 import com.es.shadowOps.dto.AsignacionDTOEstado;
+import com.es.shadowOps.error.errores.BadRequestException;
+import com.es.shadowOps.error.errores.NotAcceptableException;
+import com.es.shadowOps.error.errores.NotFoundException;
 import com.es.shadowOps.model.Agente;
 import com.es.shadowOps.model.Asignacion;
 import com.es.shadowOps.model.Mision;
@@ -28,23 +31,19 @@ public class ServiceAsignacion {
 
     public AsignacionDTOInsert insertarAsignacion(AsignacionDTOInsert asignacionDTOInsert){
         if (asignacionDTOInsert.getAgente().isEmpty() || asignacionDTOInsert.getMision().isEmpty() || asignacionDTOInsert.getDuration() <= 0){
-            // throw exception
+            throw new BadRequestException("Los campos no pueden estar vacíos");
         }
 
-        Agente a = repositoryAgente.findById(asignacionDTOInsert.getAgente()).orElse(null);
-        if( a == null){
-            // throw exception
-        }
+        Agente a = repositoryAgente.findById(asignacionDTOInsert.getAgente()).orElseThrow(() -> new NotFoundException("No se ha encontrado el agente al que quieres asignar la misión"));
+
         if(comprobarSiTieneMisionAsignadaEnCurso(a)){
-            throw new RuntimeException();
+            throw new NotAcceptableException("El agente ya tiene una misión en curso asignada");
         }
 
-        Mision m = repositoryMision.findByNombre(asignacionDTOInsert.getMision()).orElse(null);
-        if( m == null){
-            // throw exception
-        }
+        Mision m = repositoryMision.findByNombre(asignacionDTOInsert.getMision()).orElseThrow(() -> new NotFoundException("La misión no se encuentra"));
+
         if(comprobarSiTieneAgenteAsignado(m)){
-            throw new RuntimeException();
+            throw new NotAcceptableException("La misión ya tiene a un agente asignado");
         }
 
         Duration duration = Duration.ofMinutes(asignacionDTOInsert.getDuration());
@@ -68,10 +67,7 @@ public class ServiceAsignacion {
     }
 
     public List<AsignacionDTOEstado> getAllAsignacionesAgente(String agente){
-        Agente a = repositoryAgente.findById(agente).orElse(null);
-        if(a == null){
-            // Throw exception
-        }
+        Agente a = repositoryAgente.findById(agente).orElseThrow(() -> new NotFoundException("No se ha encontrado el agente"));
 
         List<Asignacion> asignacionList = repositoryAsignacion.findAll().stream().filter(asignacion -> asignacion.getAgente() == a).toList();
         return MapperAsignacion.convertirAsignacionesAAsignacionesDTO(asignacionList);
@@ -82,23 +78,14 @@ public class ServiceAsignacion {
         try {
             idL = Long.parseLong(id);
         }catch (NumberFormatException e){
-            // throw exception
+            throw new NumberFormatException("Introduce un ID válido");
         }
 
-        Asignacion asignacion = repositoryAsignacion.findById(idL).orElse(null);
-        if(asignacion == null){
-            // throw exception
-        }
+        Asignacion asignacion = repositoryAsignacion.findById(idL).orElseThrow(() -> new NotFoundException("No se ha encontrado la asignación"));
 
-        Agente agente = repositoryAgente.findById(asignacionDTOActualizar.getAgente()).orElse(null);
-        if(agente == null){
-            // throw excecption
-        }
+        Agente agente = repositoryAgente.findById(asignacionDTOActualizar.getAgente()).orElseThrow(() -> new NotFoundException("El agente no existe"));
 
-        Mision mision = repositoryMision.findByNombre(asignacionDTOActualizar.getMision()).orElse(null);
-        if(mision == null){
-            // throw exception
-        }
+        Mision mision = repositoryMision.findByNombre(asignacionDTOActualizar.getMision()).orElseThrow(() -> new NotFoundException("La misión no existe"));
 
         asignacion.setAgente(agente);
         asignacion.setMision(mision);
@@ -126,14 +113,10 @@ public class ServiceAsignacion {
         try {
             idL = Long.parseLong(id);
         }catch (NumberFormatException e){
-            // throw exception
+            throw new NumberFormatException("Introduce un ID válido");
         }
 
-        Asignacion asignacion = repositoryAsignacion.findById(idL).orElse(null);
-
-        if(asignacion == null){
-            // throw exception
-        }
+        Asignacion asignacion = repositoryAsignacion.findById(idL).orElseThrow(() -> new NotFoundException("No se ha encontrado la asignación que quieres eliminar"));
 
         repositoryAsignacion.delete(asignacion);
 

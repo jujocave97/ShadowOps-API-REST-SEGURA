@@ -1,6 +1,8 @@
 package com.es.shadowOps.service;
 
 import com.es.shadowOps.dto.MisionDTO;
+import com.es.shadowOps.error.errores.BadRequestException;
+import com.es.shadowOps.error.errores.NotFoundException;
 import com.es.shadowOps.model.Asignacion;
 import com.es.shadowOps.model.Mision;
 import com.es.shadowOps.repository.RepositoryMision;
@@ -19,7 +21,7 @@ public class ServiceMision {
     public MisionDTO insertarMision( MisionDTO misionDTO){
         if(misionDTO.getNombre().isEmpty() || misionDTO.getLugar().isEmpty() || misionDTO.getRecompensa() <= 0 ||
             misionDTO.getTipo().isEmpty()){
-            // throw exception
+                throw new BadRequestException("Los campos no pueden estar vacíos");
         }
 
         Mision mision = new Mision(
@@ -27,7 +29,6 @@ public class ServiceMision {
                 misionDTO.getRecompensa()
         );
 
-        // TODO: consultar restricciones como que no pueden venir campos vacios etc...
         repositoryMision.save(mision);
         return misionDTO;
     }
@@ -43,29 +44,27 @@ public class ServiceMision {
         try{
             idL = Long.parseLong(id);
         }catch (NumberFormatException e){
-            // throw exception
+            throw new NumberFormatException("Introduce un formato de ID válido");
         }
 
 
         if(repositoryMision.findById(idL).isEmpty() || misionDTO.getNombre().isEmpty() ||
             misionDTO.getTipo().isEmpty() || misionDTO.getLugar().isEmpty() || misionDTO.getRecompensa() <= 0){
-            // throw exeption
+            throw new BadRequestException("Los campos no pueden estar vacíos");
         }
 
-        Mision mision = repositoryMision.findById(idL).orElse(null);
-        if(mision == null){
-            // trow exeption
-        }
+        Mision mision = repositoryMision.findById(idL).orElseThrow(() -> new NotFoundException("No se ha encontrado la misión"));
+
         repositoryMision.save(MapperMision.actualizarMision(misionDTO,mision));
 
     }
 
     public MisionDTO eliminarMision (String nombre){
         if(repositoryMision.findByNombre(nombre).isEmpty()){
-            // throw exception la mision no existe
+            throw new NotFoundException("No se ha encontrado la misión que quieres eliminar");
         }
 
-        Mision mision = repositoryMision.findByNombre(nombre).orElse(null);
+        Mision mision = repositoryMision.findByNombre(nombre).orElseThrow(() -> new NotFoundException("No se ha encontrado la misión"));
         MisionDTO misionDTO = MapperMision.convertirMisionEnMisionDTO(mision);
         repositoryMision.delete(mision);
         return misionDTO;

@@ -3,6 +3,7 @@ package com.es.shadowOps.error;
 
 import com.es.shadowOps.error.errores.BadRequestException;
 import com.es.shadowOps.error.errores.DuplicatedException;
+import com.es.shadowOps.error.errores.NotAcceptableException;
 import com.es.shadowOps.error.errores.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.exception.ConstraintViolationException;
@@ -47,6 +48,13 @@ public class APIExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorMessageForClient handleGeneric(HttpServletRequest request, Exception e){
+        return new ErrorMessageForClient(e.getMessage(),request.getRequestURI());
+    }
+
+    @ExceptionHandler({NotAcceptableException.class})
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseBody
+    public ErrorMessageForClient handlerNotAcceptable(HttpServletRequest request, Exception e){
         return new ErrorMessageForClient(e.getMessage(),request.getRequestURI());
     }
 
