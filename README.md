@@ -40,25 +40,27 @@ Asignacion-mision-agente: La asignacion tiene un agente, una mision, tiempo para
     id: Long
     nombre: String
     lugar: String
-    tipo: Enum
+    tipo: Enum (?)
     descripcion: String
     recompensa: double
 
 ### Asignacion
     agente: Agente
     mision: Mision
-    tiempoParaCompletarla: Duration
-    estado: Enum
+    tiempoParaCompletarla: (por determinar)
+    estado: Enum (?)
 
 ## Lógica de negocio y Restricciones semánticas
 
-Un agente puede participar en varias misiones, si tiene una misión asignada en curso no puede hacer otra.
+Un agente puede participar en varias misiones, si tiene una misión asignada en curso no puede hacer otra. ( hecho )
 
-A una misión solo se le asigna un agente, si el agente está en una misión no puede ser asignado.
+A una misión solo se le asigna un agente, si el agente está en una misión no puede ser asignado. ( hecho )
 
-Si un agente consigue completar la misión, se queda con la recompensa.
+Si un agente consigue completar la misión, se queda con la recompensa. ( hecho )
 
 Si pasa el tiempo de la misión y no ha sido completada, pasa automaticamente a misión fallida.
+
+Si la asignación se completa, la misión se borra de la lista de misiones.
 
 Un Agente se convierte en Warlord cuando tiene un Bounty mayor que 1.000.000 de $.
 
@@ -192,4 +194,106 @@ Cuando se registra un Agente, su bounty es 0.
   * Excepciones
     * 403 Forbidden: Solo el Warlord puede eliminar una asignación.
 
-  
+
+## IMPLEMENTACIÓN DE LA API
+
+### Pruebas Agente
+
+#### Registro 
+Registrar un agente 
+
+![Registro_Agente](./imgs/agentes/registro.png)
+
+#### Login 
+Iniciar sesión
+
+![Login_Agente](./imgs/agentes/login.png)
+
+#### Obtener todos los agentes
+Obtener todos los agentes registrados en la aplicación
+
+![Obtener_todos_agentes](./imgs/agentes/getAllAgentes.png)
+
+#### Obtener un agente por el nombre clave
+Obtener la información de un agente
+
+![Obtener_agente](./imgs/agentes/getByNombreAgentes.png)
+
+#### Editar agente
+Editar un agente según la información que se le pasa
+
+![Editar_agente](./imgs/agentes/editarAgente.png)
+
+#### Eliminar agente
+Eliminar un agente por el nombre clave
+
+![Eliminar_agente](./imgs/agentes/eliminarAgentePorNombre.png) 
+
+
+### Pruebas Misiones
+
+#### Insertar misión
+Insertar una misión en la base de datos
+![Insertar_mision](./imgs/misiones/insertarMision.png)
+
+#### Obtener todas las misiones
+Obtener un listado de todas las misiones
+![Obtener_misiones](./imgs/misiones/getAllMisiones.png)
+
+#### Actualizar misión
+Actualizar una misión por ID de la misión
+![Actualizar_mision](./imgs/misiones/actualizarMision.png)
+
+#### Eliminar misión 
+Eliminar una misión por su nombre
+![Eliminar_mision](./imgs/misiones/eliminarMisionNombre.png)
+
+
+### Pruebas Asignaciones
+
+#### Insertar asignación
+Asignar a un agente una misión y un tiempo para completarla
+![Insert_asignacion](./imgs/asignaciones/asignar.png)
+
+#### Obtener todas las asignaciones
+Listar todas las asignaciones que se encuentran en la aplicación
+![Obtener_asignaciones](./imgs/asignaciones/getAllAsignaciones.png)
+
+#### Obtener todas las asignaciones de un agente
+Listar todas las asignaciones que ha tenido un agente
+![Obtener_asignaciones_agente](./imgs/asignaciones/todasLasAsignacionesDeUnAgente.png)
+
+#### Actualizar asignación
+Actualizar una asignación por el ID de esta, aquí es donde se puede poner que una misión ha sido completada
+![Insert_asignacion](./imgs/asignaciones/actualizarAsignacionID.png)
+
+#### Eliminar asignación
+Eliminar una asignación por su ID
+![Insert_asignacion](./imgs/asignaciones/eliminarAsignacion.png)
+
+#### Cuando se acaba el tiempo de una misión
+Cuando se acaba el tiempo de una misión, si esta no está completada pasa a ser misión fallida
+![Insert_asignacion](./imgs/asignaciones/siPasaElTiempoYNoSeCompletaFalla.png)
+
+
+## Tecnologías usadas
+
+Esta aplicación se ha realizado con java usando la libreria Spring Boot con las dependencias: 
+ - Spring Web
+   - Facilita el desarrollo de aplicaciones web usando el lenguaje Java
+ - MySQL Driver
+   - Permite conectar la aplicación con una base de datos de MySQL
+ - Spring Boot DevTools
+   - Mejora la experiencia de desarrollo proporcionando herramientas y funcionalidades útiles para acelerar el flujo de trabajo
+ - Spring DATA JPA 
+   - ORM que nos abstrae de tener que utilizar la base de datos
+ - OAuth2 Resource Server
+   - Componente que protege recursos al ofrecer validaciones y procesar tokens enviados por un cliente
+ - Spring configuration processor
+   - Genera metadatos para las propiedades definidas en los archivos de configuración de Spring Boot 
+ - Spring Security
+   - Proporciona soluciones integrales para la autenticación, autorización y proteccion de la aplicación
+
+Para realizar las pruebas se ha utilizado el programa Insomniac, que permite realizar y obtener todas las peticiones HTTP que se utilizan en este proyecto.
+
+
